@@ -3,32 +3,24 @@ import axios from 'axios'
 
 const Home = () => {
 
-  const [trackingDetail, setTracking] = useState("")
-  const [trackingNumber, setTrackingNo] = useState("")
+  const [trackingDetail, setTracking] = useState('')
+  const [trackingNumber, setTrackingNo] = useState('')
 
   const track =() =>{
-    //let url ="http://codapi.daewoo.net.pk/api/booking/quickTrack?trackingNo=222223457";
-    let url ="https://teamsuit.co/reportsv/2/api/products/getAll.php";
-    // fetch(url,{
-    //   method:'POST',
-    //   headers:{
-    //     'Content-type':'application/json',
-    //   }
-    // })
-    // .then(res=>{
-    //   console.log('response', res);
-    // })
-    // .catch(err =>{
-    //   console.log('Error',err);
-    // })
-    axios.get(url)
-          .then((data) => console.log("response",data));
+    let url ="https://codapi.daewoo.net.pk/api/booking/quickTrack?trackingNo="+trackingNumber;
+    axios.get(url, {
+  mode: 'no-cors' // 'cors' by default
+})
+          .then((data) => {
+            // console.log("response",data.data.Result)
+            setTracking(data.data.Result.CurrentTrackStatus[0])
+          });
   }
   return (
     <section>
       <div className='search'>
         <h1>Search Api</h1>
-        <input type="text" name="api" id="" />
+        <input type="text" name="api" id="" value={trackingNumber} onChange={(e) => setTrackingNo(e.target.value)} />
         <button onClick={()=>track()}>Submit</button>
       </div>
 
@@ -37,23 +29,23 @@ const Home = () => {
           <table>
             <tr>
               <td>Tracking Id</td>
-              <td>1234</td>
+              <td>{trackingDetail.track_no}</td>
             </tr>
             <tr>
               <td> Sender name</td>
-              <td>tahir</td>
+              <td>{trackingDetail.sender_name}</td>
             </tr>
             <tr>
               <td> reciever name</td>
-              <td>tahir</td>
+              <td>{trackingDetail.receiver_name}</td>
             </tr>
             <tr>
-              <td> destinatio</td>
-              <td>tahir</td>
+              <td> destination</td>
+              <td>{trackingDetail.destination_terminal}</td>
             </tr>
             <tr>
               <td> post area</td>
-              <td>tahir</td>
+              <td>{trackingDetail.source_terminal}</td>
             </tr>
           </table>
         </div>
